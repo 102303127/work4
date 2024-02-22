@@ -32,8 +32,7 @@ public class CommentController {
     @PostMapping("/publish")
     public result publish(@RequestParam(value = "video_id",required = false)String video_id,
                           @RequestParam(value = "comment_id",required = false)String comment_id,
-                          @RequestParam(value = "content",required = false) String content,
-                          HttpServletRequest request){
+                          @RequestParam(value = "content",required = false) String content){
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         //数据校验设置值
         String videoId = DataUtils.validation(video_id);

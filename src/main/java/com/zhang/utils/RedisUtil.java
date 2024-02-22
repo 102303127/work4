@@ -1,10 +1,10 @@
 package com.zhang.utils;
 
+import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
-
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -16,13 +16,19 @@ import java.util.concurrent.TimeUnit;
  * &#064;date  2024/2/10
  * &#064;Description  Redis缓存工具类
  */
+
 @Component
 public final class RedisUtil {
 
-    @Autowired
-    private RedisTemplate<String, Object> redisTemplate;
 
-   // ==========================rank======================
+    @Autowired
+    private static RedisTemplate<String, Object> redisTemplate;
+
+    public RedisUtil(RedisTemplate<String, Object> redisTemplate) {
+        RedisUtil.redisTemplate = redisTemplate;
+    }
+
+    // ==========================rank======================
     /**
      * 添加对象和分数到redis中
      * @param key
@@ -39,7 +45,7 @@ public final class RedisUtil {
      * @param member
      * @return
      */
-    public double getScore(String key, String member) {
+    public  double getScore(String key, String member) {
         return redisTemplate.opsForZSet().score(key, member);
     }
 
@@ -138,7 +144,7 @@ public final class RedisUtil {
      * @param key 键
      * @return 值
      */
-    public Object get(String key) {
+    public static Object get(String key) {
         return key == null ? null : redisTemplate.opsForValue().get(key);
     }
 
@@ -625,5 +631,6 @@ public final class RedisUtil {
         }
 
     }
+
 
 }

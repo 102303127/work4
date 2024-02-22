@@ -7,6 +7,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+
 /**
  * @author zhang
  * @date  2024/2/7
@@ -16,7 +18,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class FollowUser{
+public class FollowUser implements Serializable {
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     private Long id;
     private String username;

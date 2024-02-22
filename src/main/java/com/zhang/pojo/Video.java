@@ -21,7 +21,7 @@ import java.util.Date;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Video {
+public class Video implements Serializable{
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     private Long id;
     @JsonFormat(shape = JsonFormat.Shape.STRING)

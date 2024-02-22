@@ -9,6 +9,8 @@ import com.zhang.utils.FileUtils;
 import com.zhang.vo.result;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -48,20 +50,18 @@ public class VideoController {
      * @param file
      * @param title
      * @param description
-     * @param request
      * @return
      * @throws IOException
      */
     @PostMapping("/publish")
     public result publish(MultipartFile file,
                           @RequestParam("title") String title,
-                          @RequestParam("description") String description,
-                          HttpServletRequest request) throws IOException {
+                          @RequestParam("description") String description) throws IOException {
         String url = fileUtils.uploads(file);
         boolean flag=url!=null;
         if(flag){
-            String token = request.getHeader("token");
-            User user = userService.getCurrentUser(token);
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            User user = (User) authentication.getPrincipal();
             videoService.publish(user.getId(), url, title, description);
             return result.OK(url);
         }

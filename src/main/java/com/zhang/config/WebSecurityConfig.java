@@ -2,11 +2,14 @@ package com.zhang.config;
 
 import com.zhang.handler.JwtAuthenticationTokenFilter;
 import com.zhang.service.UserService;
+import jakarta.annotation.Resource;
+import jakarta.servlet.Filter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationEventPublisher;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.DefaultAuthenticationEventPublisher;
@@ -34,8 +37,6 @@ public class WebSecurityConfig {
 
 
     @Autowired
-    JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter;
-    @Autowired
     MyAuthenticationEntryPoint myAuthenticationEntryPoint;
 
     @Bean
@@ -51,24 +52,28 @@ public class WebSecurityConfig {
                 }  )
 
                 .csrf(AbstractHttpConfigurer::disable)//关闭csrf防御
-                .securityMatcher("/user/**")
+                .securityMatcher("/user/login")
                 .authorizeHttpRequests(authorizeRequests -> authorizeRequests
                         //login免认证
-                        /*.requestMatchers(HttpMethod.POST,"/user/login").permitAll()*/
+                        .requestMatchers(HttpMethod.POST,"/user/login").permitAll()
                         .anyRequest()
                         .authenticated()
                 )
+                //把token校验过滤器添加到过滤器链中
+                .addFilterBefore(new JwtAuthenticationTokenFilter(),UsernamePasswordAuthenticationFilter.class)
                 .httpBasic(Customizer.withDefaults())
                 /*.formLogin(Customizer.withDefaults());*/
                 .formLogin(form -> form
                         .loginPage("/user/login")
                         .permitAll());
-        //把token校验过滤器添加到过滤器链中
-        http.addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
+
+        /*http.addFilterBefore(jwtAuthenticationTokenFilter(), UsernamePasswordAuthenticationFilter.class);*/
         return http.build();
     }
 
-
+    private JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter() {
+        return new JwtAuthenticationTokenFilter();
+    }
     /**
      * 发布一个 AuthenticationEventPublisher @Bean，用于发布认证事件
      * @param delegate

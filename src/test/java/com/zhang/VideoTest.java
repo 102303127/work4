@@ -20,7 +20,7 @@ public class VideoTest {
     @Test
     public void Test(){
 
-        System.out.println(videoService.getTotal(1751791889439989761L));
+        /*System.out.println(videoService.getTotal(1751791889439989761L));*/
 
         /*Page<Video> page = new Page<>(1,1);
         videoMapper.selectPage(page,null);

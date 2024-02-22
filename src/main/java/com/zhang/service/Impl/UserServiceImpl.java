@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -49,7 +50,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper , User>
         if(Objects.isNull(user)){
             throw new RuntimeException("用户名或密码错误");
         }
-        //TODO 根据用户查询权限信息 添加到LoginUser中
+        //TODO 根据用户查询权限信息 添加到User中
         //封装成UserDetails对象返回
         return user;
     }

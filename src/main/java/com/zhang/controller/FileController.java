@@ -39,7 +39,7 @@ public class FileController {
      * @throws IOException
      */
     @PutMapping("/avatar/uploads")
-    public result update(@RequestBody MultipartFile file, HttpServletRequest request) throws IOException {
+    public result update(@RequestBody MultipartFile file) throws IOException {
         // 原始文件名称
         String fileName = file.getOriginalFilename();
 

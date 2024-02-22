@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -19,7 +20,7 @@ import java.util.Date;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Follow {
+public class Follow implements Serializable {
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     private Long id;
     @JsonFormat(shape = JsonFormat.Shape.STRING)

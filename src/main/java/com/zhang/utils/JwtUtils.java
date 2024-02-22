@@ -6,9 +6,7 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import java.util.Base64;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.UUID;
-import java.util.function.Function;
 
 /**
  * JWT工具类
@@ -20,7 +18,7 @@ import java.util.function.Function;
 public class JwtUtils {
 
     //有效期为
-    public static final Long ACCESS_TOKEN_VALIDITY_SECONDS = 10 *1000L;
+    public static final Long ACCESS_TOKEN_VALIDITY_SECONDS = 1000L;
     public static final Long REFRESH_TOKEN_VALIDITY_SECONDS = 10 * 60 * 60 *1000L;
     public static final Long JWT_TTL = 60 * 60 *1000L;// 60 * 60 *1000  一个小时
     //设置秘钥明文
@@ -40,7 +38,6 @@ public class JwtUtils {
         JwtBuilder builder = getJwtBuilder(subject, null, getUUID());// 设置过期时间
         return builder.compact();
     }
-
     /**
      * 生成jwt字符串
      * @param subject token中要存放的数据（json格式）
@@ -51,6 +48,7 @@ public class JwtUtils {
         JwtBuilder builder = getJwtBuilder(subject, ttlMillis, getUUID());// 设置过期时间
         return builder.compact();
     }
+
     /**
      * 创建token
      * @param id
@@ -70,6 +68,10 @@ public class JwtUtils {
     public static String createRefreshToken(String subject){
         return createJWT(subject,REFRESH_TOKEN_VALIDITY_SECONDS);
     }
+    public static String createAccessTokenByRefresh(String refreshToken){
+        String subject = JwtUtils.parseJWT(refreshToken).getSubject();
+        return createJWT(subject,REFRESH_TOKEN_VALIDITY_SECONDS);
+    }
 
     private static JwtBuilder getJwtBuilder(String subject, Long ttlMillis, String uuid) {
         SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
@@ -86,8 +88,8 @@ public class JwtUtils {
                 .setSubject(subject)   // 主题  可以是JSON数据
                 .setIssuer("sg")     // 签发者
                 .setIssuedAt(now)      // 签发时间
-                .signWith(signatureAlgorithm, secretKey)
-                .setExpiration(expDate); //使用HS256对称加密算法签名, 第二个参数为秘钥
+                .signWith(signatureAlgorithm, secretKey)  //使用HS256对称加密算法签名, 第二个参数为秘钥
+                .setExpiration(expDate);
     }
 
     /**
@@ -122,14 +124,23 @@ public class JwtUtils {
     }
 
 
+    /**
+     * 检查令牌是否过期:过期返回true
+     * @param token
+     * @return
+     */
+    public static Boolean isTokenExpired(String token) {
+        final Date expiration = JwtUtils.parseJWT(token).getExpiration();
+        return expiration.before(new Date());
+    }
 
-    public static void main(String[] args) throws Exception {
-        /*String jwt = createJWT("123456");
+/*    public static void main(String[] args) throws Exception {
+        *//*String jwt = createJWT("123456");
         Claims claims = parseJWT("eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJlN2YxNTkyYzY3NTk0NjEwYjRmYjMxMzI1MmI0MDkyZCIsInN1YiI6IjE3NTE3OTE4ODk0Mzk5ODk3NjEiLCJpc3MiOiJzZyIsImlhdCI6MTcwNzk3NTYwMCwiZXhwIjoxNzA3OTc5MjAwfQ.3s25E3om5rSn5_YtHLrHuOfbvm_5vx9NzoDYM88MUy8");
 
-        System.out.println(claims.getSubject());*/
+        System.out.println(claims.getSubject());*//*
         System.out.println(parseJWT("eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIyYTU2OTA4MzljOTg0ZjIwYmVmNzc3ZmI4ZmE2MjcwNCIsInN1YiI6IjE3NTgyODQ5MDExNDE2MzUwNzQiLCJpc3MiOiJzZyIsImlhdCI6MTcwODMyMjU1OSwiZXhwIjoxNzA4MzIyNTYwfQ.IQCKprMYzeNYLwJkfqY-qTlf6pzQfoeFUG_EkndYlMQ").getExpiration());
-    }
+    }*/
 
 }
 

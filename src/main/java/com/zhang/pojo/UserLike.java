@@ -7,6 +7,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -18,7 +20,7 @@ import java.util.Date;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserLike {
+public class UserLike implements Serializable {
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     private Long id;
     @JsonFormat(shape = JsonFormat.Shape.STRING)

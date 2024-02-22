@@ -31,12 +31,13 @@ class Work40124ApplicationTests {
     @Test
     void contextLoads() {
 
+        System.out.println(JwtUtils.isTokenExpired("eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJlN2MyMTRiZWFmYjE0MGFhODUyNGY4ZmI5MDM3MTcyNiIsInN1YiI6IjE3NTgyODQ5MDExNDE2MzUwNzQiLCJpc3MiOiJzZyIsImlhdCI6MTcwODU2Mjc4MywiZXhwIjoxNzA4NTYyNzg0fQ.RAl7SUapFiXbuiV-v3L5qQerv1ihLk1Y7bB6blB8css"));
+        System.out.println(JwtUtils.isTokenExpired("eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxNjkzZTgyNzdjNjA0ZTMxODA5YmE5YTc5ZjdmZjU5OSIsInN1YiI6IjE3NTgyODQ5MDExNDE2MzUwNzQiLCJpc3MiOiJzZyIsImlhdCI6MTcwODU2Mjc4NCwiZXhwIjoxNzA4NTk4Nzg0fQ.Z_mYdCQVc7rkJvpALoh0rW_BptmEtrOE0m0hNvCxh7Q"));
         //System.out.println(userService.getCurrentUser("6179a1c422454d07959da5e4356774d4"));
-
 
 /*        String accessToken = JwtUtils.createAccessToken("123456");
         System.out.println(JwtUtils.parseJWT(accessToken).getIssuedAt());*/
-        System.out.println(JwtUtils.parseJWT("eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJkMzM0ODg0ZTk4MTk0YjlkOGVmM2FiOTNmNzU2M2NiOSIsInN1YiI6IjE3NTgyODQ5MDExNDE2MzUwNzQiLCJpYXQiOjE3MDgzMzE2NjIsImV4cCI6MTcwODMzMTY3Mn0.lua2pSU46Y4O9UIH8Xj-FO2b3xjxbitUPmzQXGgeGUs").getSubject());
+
         /*System.out.println(userMapper.GetById(1751791889439989761L));*/
 
         /*System.out.println(redisUtil.get("d489335c8f2b4a4897f5ca8c81a15e0f"));*/
@@ -54,7 +55,6 @@ class Work40124ApplicationTests {
         /*User currentUser = userService.getCurrentUser("1749801650601238530:42ff4de0734a4a428a4aea249df7bc0a");
         System.out.println(currentUser);*/
 
-
         /*System.out.println(userService.getById(1749801650601238530L));*/
         /*User user = new User();
         user.setUsername("小小世界");
@@ -64,5 +64,4 @@ class Work40124ApplicationTests {
 
         /*userMapper.insert(user);*/
     }
-
 }

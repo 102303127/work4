@@ -106,7 +106,7 @@ public class UserLikeServiceImpl implements UserLikeService {
             for (UserLike userLike : userLikes) {
                 userLike.setDeletedAt(new Date());
             }
-            return  userLikeMapper.delete(qw1)!=0;
+            return userLikeMapper.delete(qw1)!=0;
         }
         if (DataUtils.judge(commentId)){
             //判断是否点赞

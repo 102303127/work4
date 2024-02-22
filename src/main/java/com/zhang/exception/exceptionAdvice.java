@@ -1,6 +1,5 @@
 package com.zhang.exception;
 
-
 import com.zhang.vo.base;
 import com.zhang.vo.result;
 import lombok.extern.slf4j.Slf4j;
@@ -16,7 +15,7 @@ public class exceptionAdvice {
     @ResponseBody
     public result processUserException(userException e){
         log.error("业务异常"+ e);
-        return new result(new base(-1,"操作错误:"+e.getMessage()) );
+        return result.Fail("操作错误:" + e.getMessage());
     }
 
     @ExceptionHandler(Exception.class)
