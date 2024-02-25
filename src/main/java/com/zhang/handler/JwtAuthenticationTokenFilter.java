@@ -27,8 +27,10 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         //获取accessToken
         String accessToken = request.getHeader("accessToken");
-        //排除登录(login)请求，排除accessToken没有内容的
-        if (!StringUtils.hasText(accessToken)|| Objects.equals(request.getServletPath(), "/user/login")) {
+        //排除登录(login)+注册请求(register)请求，排除accessToken没有内容的
+        if (!StringUtils.hasText(accessToken)
+                ||Objects.equals(request.getServletPath(), "/user/login")
+                ||Objects.equals(request.getServletPath(), "/user/register")) {
             //放行
             filterChain.doFilter(request, response);
             return;
@@ -39,10 +41,13 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
             if (JwtUtils.isTokenExpired(refreshToken)){
                 throw new userException("过久未登录，请重新登录");
             }else {
-                //利用refreshToken生成accessToken
-                //将新accessToken存到Api fox中
+                //利用refreshToken生成accessToken和refreshToken
+                //将新Token存到Api fox的Header中
                 try {
                     accessToken = JwtUtils.createAccessTokenByRefresh(refreshToken);
+                    response.setHeader("accessToken",accessToken);
+                    String newRefreshToken=JwtUtils.createRefreshTokenByRefresh(refreshToken);
+                    response.setHeader("refreshToken",newRefreshToken);
                 } catch (Exception e) {
                     logger.error(e);
                     throw new userException("token非法");

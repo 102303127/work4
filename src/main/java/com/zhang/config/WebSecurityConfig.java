@@ -35,7 +35,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class WebSecurityConfig {
 
-
     @Autowired
     MyAuthenticationEntryPoint myAuthenticationEntryPoint;
 
@@ -69,10 +68,6 @@ public class WebSecurityConfig {
 
         /*http.addFilterBefore(jwtAuthenticationTokenFilter(), UsernamePasswordAuthenticationFilter.class);*/
         return http.build();
-    }
-
-    private JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter() {
-        return new JwtAuthenticationTokenFilter();
     }
     /**
      * 发布一个 AuthenticationEventPublisher @Bean，用于发布认证事件

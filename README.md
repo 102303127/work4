@@ -134,7 +134,5 @@
 
 
 ## 4.项目待改进点、
-
-- **accessToken**和**refreshToken**验证身份：无法把刷新出来的Token传到Apifox
 - MFA认证
 

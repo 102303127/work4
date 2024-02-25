@@ -31,10 +31,8 @@ class Work40124ApplicationTests {
     @Test
     void contextLoads() {
 
-        System.out.println(JwtUtils.isTokenExpired("eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJlN2MyMTRiZWFmYjE0MGFhODUyNGY4ZmI5MDM3MTcyNiIsInN1YiI6IjE3NTgyODQ5MDExNDE2MzUwNzQiLCJpc3MiOiJzZyIsImlhdCI6MTcwODU2Mjc4MywiZXhwIjoxNzA4NTYyNzg0fQ.RAl7SUapFiXbuiV-v3L5qQerv1ihLk1Y7bB6blB8css"));
-        System.out.println(JwtUtils.isTokenExpired("eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxNjkzZTgyNzdjNjA0ZTMxODA5YmE5YTc5ZjdmZjU5OSIsInN1YiI6IjE3NTgyODQ5MDExNDE2MzUwNzQiLCJpc3MiOiJzZyIsImlhdCI6MTcwODU2Mjc4NCwiZXhwIjoxNzA4NTk4Nzg0fQ.Z_mYdCQVc7rkJvpALoh0rW_BptmEtrOE0m0hNvCxh7Q"));
-        //System.out.println(userService.getCurrentUser("6179a1c422454d07959da5e4356774d4"));
-
+        System.out.println(JwtUtils.parseJWT("eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJlZDA5MjJlOTBiOTU0OGNkOWYxY2M0NWM3MzIyZGFiNSIsInN1YiI6IjE3NTgyODQ5MDExNDE2MzUwNzQiLCJpc3MiOiJzZyIsImlhdCI6MTcwODc3NDkwMSwiZXhwIjoxNzA4Nzc1NTAxfQ.3KOFL6oyHyBh2fU4YFpW_eKhNE_Zm2XEnBMImd8po9w").getExpiration());
+        System.out.println(JwtUtils.parseJWT("eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJlZDA5MjJlOTBiOTU0OGNkOWYxY2M0NWM3MzIyZGFiNSIsInN1YiI6IjE3NTgyODQ5MDExNDE2MzUwNzQiLCJpc3MiOiJzZyIsImlhdCI6MTcwODc3NDkwMSwiZXhwIjoxNzA4Nzc1NTAxfQ.3KOFL6oyHyBh2fU4YFpW_eKhNE_Zm2XEnBMImd8po9w").getIssuedAt());
 /*        String accessToken = JwtUtils.createAccessToken("123456");
         System.out.println(JwtUtils.parseJWT(accessToken).getIssuedAt());*/
 

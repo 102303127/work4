@@ -18,7 +18,7 @@ import java.util.UUID;
 public class JwtUtils {
 
     //有效期为
-    public static final Long ACCESS_TOKEN_VALIDITY_SECONDS = 1000L;
+    public static final Long ACCESS_TOKEN_VALIDITY_SECONDS = 10 * 60 * 1000L;
     public static final Long REFRESH_TOKEN_VALIDITY_SECONDS = 10 * 60 * 60 *1000L;
     public static final Long JWT_TTL = 60 * 60 *1000L;// 60 * 60 *1000  一个小时
     //设置秘钥明文
@@ -69,6 +69,10 @@ public class JwtUtils {
         return createJWT(subject,REFRESH_TOKEN_VALIDITY_SECONDS);
     }
     public static String createAccessTokenByRefresh(String refreshToken){
+        String subject = JwtUtils.parseJWT(refreshToken).getSubject();
+        return createJWT(subject,ACCESS_TOKEN_VALIDITY_SECONDS);
+    }
+    public static String createRefreshTokenByRefresh(String refreshToken){
         String subject = JwtUtils.parseJWT(refreshToken).getSubject();
         return createJWT(subject,REFRESH_TOKEN_VALIDITY_SECONDS);
     }
