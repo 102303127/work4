@@ -23,6 +23,13 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+/*    @GetMapping("/user")
+    public result getCurrentUser() {
+        Authentication authentication= SecurityContextHolder.getContext().getAuthentication();
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        String username = userDetails.getUsername();
+        return result.OK(userDetails);
+    }*/
 
     /**
      * 注册方法

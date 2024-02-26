@@ -2,6 +2,7 @@ package com.zhang.service.Impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.zhang.exception.userException;
 import com.zhang.mapper.UserMapper;
 import com.zhang.pojo.User;
 import com.zhang.service.UserService;
@@ -48,7 +49,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper , User>
         User user = userMapper.selectOne(wrapper);
         //如果查询不到数据就通过抛出异常来给出提示
         if(Objects.isNull(user)){
-            throw new RuntimeException("用户名或密码错误");
+            throw new userException("用户名或密码错误");
         }
         //TODO 根据用户查询权限信息 添加到User中
         //封装成UserDetails对象返回
@@ -86,15 +87,19 @@ public class UserServiceImpl extends ServiceImpl<UserMapper , User>
         // 会执行UserServiceImpl中的loadUserByUsername方法
         Authentication authenticate = authenticationManager.authenticate(authenticationToken);
         if(Objects.isNull(authenticate)){
-            throw new RuntimeException("用户名或密码错误");
+            throw new userException("用户名或密码错误");
         }
+
         //使用userid生成token
         User user = (User) authenticate.getPrincipal();
         String userId = user.getId().toString();
         String AccessToken = JwtUtils.createAccessToken(userId);
         String RefreshToken = JwtUtils.createRefreshToken(userId);
+
         //authenticate存入redis
         redisUtil.set("login:"+userId,user);
+
+        //把Token返回前端接口
         Map<String,String> map=new HashMap<>();
         map.put("accessToken",AccessToken);
         map.put("refreshToken",RefreshToken);

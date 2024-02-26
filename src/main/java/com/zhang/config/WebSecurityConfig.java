@@ -3,8 +3,9 @@ package com.zhang.config;
 import com.zhang.handler.JwtAuthenticationTokenFilter;
 import com.zhang.service.UserService;
 import jakarta.annotation.Resource;
-import jakarta.servlet.Filter;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
@@ -35,8 +36,10 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class WebSecurityConfig {
 
-    @Autowired
-    MyAuthenticationEntryPoint myAuthenticationEntryPoint;
+
+    @Resource
+    @Qualifier("delegatedAuthenticationEntryPoint")
+    AuthenticationEntryPoint authEntryPoint;
 
     @Bean
     public PasswordEncoder passwordEncoder(){
@@ -46,11 +49,8 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .exceptionHandling(httpSecurityExceptionHandlingConfigurer -> {
-                    httpSecurityExceptionHandlingConfigurer.authenticationEntryPoint(myAuthenticationEntryPoint);
-                }  )
-
-                .csrf(AbstractHttpConfigurer::disable)//关闭csrf防御
+                //关闭csrf防御
+                .csrf(AbstractHttpConfigurer::disable)
                 .securityMatcher("/user/login")
                 .authorizeHttpRequests(authorizeRequests -> authorizeRequests
                         //login免认证
@@ -61,12 +61,17 @@ public class WebSecurityConfig {
                 //把token校验过滤器添加到过滤器链中
                 .addFilterBefore(new JwtAuthenticationTokenFilter(),UsernamePasswordAuthenticationFilter.class)
                 .httpBasic(Customizer.withDefaults())
-                /*.formLogin(Customizer.withDefaults());*/
+                //设置登录url
                 .formLogin(form -> form
                         .loginPage("/user/login")
                         .permitAll());
-
-        /*http.addFilterBefore(jwtAuthenticationTokenFilter(), UsernamePasswordAuthenticationFilter.class);*/
+        //异常处理
+        http.exceptionHandling(exception  ->{
+            exception.authenticationEntryPoint(authEntryPoint);
+        });
+        //关闭session
+        http.sessionManagement(session ->
+                session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         return http.build();
     }
     /**
