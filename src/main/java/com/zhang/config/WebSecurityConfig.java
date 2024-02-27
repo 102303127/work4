@@ -38,7 +38,7 @@ public class WebSecurityConfig {
 
 
     @Resource
-    @Qualifier("delegatedAuthenticationEntryPoint")
+    @Qualifier("customAuthenticationEntryPoint")
     AuthenticationEntryPoint authEntryPoint;
 
     @Bean
@@ -69,6 +69,7 @@ public class WebSecurityConfig {
         http.exceptionHandling(exception  ->{
             exception.authenticationEntryPoint(authEntryPoint);
         });
+
         //关闭session
         http.sessionManagement(session ->
                 session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));

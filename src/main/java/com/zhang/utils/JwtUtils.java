@@ -18,8 +18,8 @@ import java.util.UUID;
 public class JwtUtils {
 
     //有效期为
-    public static final Long ACCESS_TOKEN_VALIDITY_SECONDS = 10 * 60 * 1000L;
-    public static final Long REFRESH_TOKEN_VALIDITY_SECONDS = 10 * 60 * 60 *1000L;
+    public static final Long ACCESS_TOKEN_VALIDITY_SECONDS = 60 * 60 * 1000L;//一个小时
+    public static final Long REFRESH_TOKEN_VALIDITY_SECONDS =24 * 60 * 60 *1000L;//一天
     public static final Long JWT_TTL = 60 * 60 *1000L;// 60 * 60 *1000  一个小时
     //设置秘钥明文
     public static final String JWT_KEY = "test";

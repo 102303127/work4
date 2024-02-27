@@ -38,12 +38,16 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
             return;
         }
+        //未登录异常
+        if (Objects.equals(accessToken,"undefined")){
+            throw new AuthenticationException("请先登录");
+        }
 
         //检查token时效性
         if (JwtUtils.isTokenExpired(accessToken)){
             String refreshToken = request.getHeader("refreshToken");
             if (JwtUtils.isTokenExpired(refreshToken)){
-                request.setAttribute("msg","过久未登录，请重新登录");
+                request.setAttribute("errorMessage","过久未登录，请重新登录");
                 throw new userException("过久未登录，请重新登录");
             }else {
                 //利用refreshToken生成accessToken和refreshToken
