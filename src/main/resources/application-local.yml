@@ -1,0 +1,13 @@
+
+
+
+image:
+  basePath: C:\Users\31445\IdeaProjects\work4-file
+  urlPath: http://localhost:8080
+
+host:
+  database:
+    ip: localhost
+    pwd: zy112500
+  redis:
+    ip: 127.0.0.1

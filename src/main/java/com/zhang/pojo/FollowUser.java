@@ -11,8 +11,8 @@ import java.io.Serializable;
 
 /**
  * @author zhang
- * @date  2024/2/7
- * @Description 用于实现关注，好友查询功能实现
+ * &#064;date   2024/2/7
+ * &#064;Description  用于实现关注，好友查询功能实现
  */
 @TableName("user")
 @Data

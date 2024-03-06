@@ -3,7 +3,7 @@ package com.zhang.service.Impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.zhang.exception.userException;
+import com.zhang.advice.exception.userException;
 import com.zhang.mapper.CommentMapper;
 import com.zhang.mapper.UserMapper;
 import com.zhang.mapper.VideoMapper;

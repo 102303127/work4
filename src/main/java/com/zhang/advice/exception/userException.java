@@ -1,4 +1,4 @@
-package com.zhang.exception;
+package com.zhang.advice.exception;
 
 /**
  * 自定义异常
@@ -9,7 +9,7 @@ package com.zhang.exception;
  */
 public class userException extends RuntimeException{
 
-    private String message;
+    private final String message;
 
     public userException(String message) {
         this.message = message;

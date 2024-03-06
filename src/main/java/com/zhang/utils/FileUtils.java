@@ -1,5 +1,6 @@
 package com.zhang.utils;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -16,7 +17,12 @@ import java.util.UUID;
 @Component
 public class FileUtils {
 
-    public static final String UPLOAD_PATH="C:\\Users\\31445\\IdeaProjects\\work4-file";
+    @Value("${image.basePath}")
+    private String UPLOAD_PATH;
+
+    @Value("${image.urlPath}")
+    private String urlPrefix;
+
 
     public String uploads(MultipartFile file) throws IOException {
         String fileName = Objects.requireNonNull(file.getOriginalFilename()).substring(0,file.getOriginalFilename().lastIndexOf("."));
@@ -28,7 +34,7 @@ public class FileUtils {
         File descFile = new File(UPLOAD_PATH, filename);
         file.transferTo(descFile);
 
-        return "http://localhost:8080/image/"+filename;
+        return urlPrefix+"/image/"+filename;
 
     }
 }

@@ -1,11 +1,10 @@
 package com.zhang.handler;
 
-import com.zhang.exception.userException;
+import com.zhang.advice.exception.userException;
 import com.zhang.pojo.User;
 import com.zhang.utils.JwtUtils;
 import com.zhang.utils.RedisUtil;
 import io.jsonwebtoken.Claims;
-import jakarta.annotation.Resource;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

@@ -37,10 +37,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class WebSecurityConfig {
 
 
-    @Resource
-    @Qualifier("customAuthenticationEntryPoint")
-    AuthenticationEntryPoint authEntryPoint;
-
     @Bean
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
@@ -48,6 +44,10 @@ public class WebSecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        /*http.exceptionHandling(exception  ->{
+        exception.authenticationEntryPoint(authEntryPoint);
+        });*/
+
         http
                 //关闭csrf防御
                 .csrf(AbstractHttpConfigurer::disable)
@@ -59,22 +59,22 @@ public class WebSecurityConfig {
                         .authenticated()
                 )
                 //把token校验过滤器添加到过滤器链中
-                .addFilterBefore(new JwtAuthenticationTokenFilter(),UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new JwtAuthenticationTokenFilter(),
+                        UsernamePasswordAuthenticationFilter.class)
                 .httpBasic(Customizer.withDefaults())
                 //设置登录url
                 .formLogin(form -> form
                         .loginPage("/user/login")
                         .permitAll());
         //异常处理
-        http.exceptionHandling(exception  ->{
-            exception.authenticationEntryPoint(authEntryPoint);
-        });
+
 
         //关闭session
         http.sessionManagement(session ->
                 session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         return http.build();
     }
+
     /**
      * 发布一个 AuthenticationEventPublisher @Bean，用于发布认证事件
      * @param delegate

@@ -21,7 +21,7 @@ public class data {
         this.total = total;
     }
 
-    public data(List<Video> items) {
+    public data(List items) {
         this.items = items;
     }
 

@@ -1,7 +1,7 @@
 package com.zhang.service.Impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.zhang.exception.userException;
+import com.zhang.advice.exception.userException;
 import com.zhang.mapper.CommentMapper;
 import com.zhang.mapper.UserLikeMapper;
 import com.zhang.mapper.VideoMapper;

@@ -4,6 +4,7 @@ package com.zhang.service.Impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.zhang.advice.exception.userException;
 import com.zhang.mapper.UserMapper;
 import com.zhang.mapper.VideoMapper;
 import com.zhang.pojo.User;
@@ -60,6 +61,14 @@ public class VideoServiceImpl implements VideoService {
      */
     @Override
     public boolean publish(Long userId, String video_url, String title, String description) {
+        //检测视频是否上传过
+        QueryWrapper<Video> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("video_url", video_url);
+        queryWrapper.eq("user_id",userId);
+        if (videoMapper.selectOne(queryWrapper)!=null) {
+            throw new userException("您已经上传过该视频");
+        }
+        //生成新的视频
         Video video = new Video();
         video.setUserId(userId);
         video.setVideoUrl(video_url);
@@ -155,6 +164,17 @@ public class VideoServiceImpl implements VideoService {
         int startIndex = (page_num - 1) * page_size;
         int endIndex = Math.min(startIndex + page_size, videos1.size());
         return videos1.subList(startIndex, endIndex);
+    }
+
+    @Override
+    public void addVisitCount(String videoUrl) {
+        QueryWrapper<Video> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("video_url", videoUrl);
+        List<Video> videos = videoMapper.selectList(queryWrapper);
+        for (Video video : videos) {
+            video.setVisitCount(video.getVisitCount()+1);
+            videoMapper.updateById(video);
+        }
     }
 
 

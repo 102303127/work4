@@ -24,4 +24,6 @@ public interface VideoService {
                        String to_date,
                        String username);
     List<Video> popular(Integer page_size,Integer page_num);
+
+    void addVisitCount(String videoUrl);
 }

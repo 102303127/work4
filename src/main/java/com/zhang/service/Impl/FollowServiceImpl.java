@@ -1,7 +1,7 @@
 package com.zhang.service.Impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.zhang.exception.userException;
+import com.zhang.advice.exception.userException;
 import com.zhang.mapper.FollowMapper;
 import com.zhang.mapper.FollowUserMapper;
 import com.zhang.pojo.Follow;
@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Date;
+
 import java.util.List;
 import java.util.Objects;
 

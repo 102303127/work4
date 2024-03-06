@@ -26,8 +26,6 @@ public class CommentController {
 
     @Autowired
     private CommentService commentService;
-    @Autowired
-    private UserService userService;
 
     @PostMapping("/publish")
     public result publish(@RequestParam(value = "video_id",required = false)String video_id,
