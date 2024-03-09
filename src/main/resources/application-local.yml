@@ -11,3 +11,4 @@ host:
     pwd: zy112500
   redis:
     ip: 127.0.0.1
+    pwd: 123456

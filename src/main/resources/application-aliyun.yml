@@ -8,6 +8,7 @@ image:
 host:
   database:
     ip: 39.101.207.21
-    pwd: 123456
+    pwd: Yj20o48zLkCwI1h
   redis:
     ip: 39.101.207.21
+    pwd: $2a$04$Yj20o48zLkCwI1h

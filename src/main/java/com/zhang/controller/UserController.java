@@ -56,6 +56,7 @@ public class UserController {
     @PostMapping("/login")
     public result login(@RequestParam("username") String username,
                         @RequestParam("password") String password){
+        //利用Map返回accessToken和refreshToken
         Map<String, String> map = userService.login(username, password);
         return result.OK(map);
     }

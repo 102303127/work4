@@ -89,6 +89,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper , User>
             throw new userException("用户名或密码错误");
         }
 
+
         //使用userid生成token
         User user = (User) authenticate.getPrincipal();
         String userId = user.getId().toString();

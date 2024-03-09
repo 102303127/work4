@@ -59,13 +59,16 @@ public class WebSecurityConfig {
                         .authenticated()
                 )
                 //把token校验过滤器添加到过滤器链中
-                .addFilterBefore(new JwtAuthenticationTokenFilter(),
-                        UsernamePasswordAuthenticationFilter.class)
+
                 .httpBasic(Customizer.withDefaults())
                 //设置登录url
                 .formLogin(form -> form
                         .loginPage("/user/login")
                         .permitAll());
+        http.addFilterBefore(new JwtAuthenticationTokenFilter(),
+                UsernamePasswordAuthenticationFilter.class);
+
+
         //异常处理
 
 

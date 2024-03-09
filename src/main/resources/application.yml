@@ -21,6 +21,7 @@ spring:
     redis:
       host: ${host.redis.ip}
       port: 6379
+      password: ${host.redis.pwd}
 
   servlet:
     multipart:

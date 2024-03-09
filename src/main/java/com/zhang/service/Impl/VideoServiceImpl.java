@@ -95,6 +95,11 @@ public class VideoServiceImpl implements VideoService {
         return iPage.getRecords();
     }
 
+    /**
+     * 根据用户ID获得用户发布视频列表
+     * @param userId
+     * @return
+     */
     @Override
     public Long getTotal(long userId) {
         QueryWrapper<Video> queryWrapper=new QueryWrapper<>();

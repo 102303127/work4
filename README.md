@@ -1,5 +1,24 @@
 # Java第四轮单人作业
 
+
+
+## API文档
+
+https://apifox.com/apidoc/shared-e3790ee1-bd63-44ac-89c7-7c94c49b7411
+
+- 测试有些示例数据在旁边描述
+- 测试接口注册登录完成后要手动设置accessToken环境变量
+
+
+
+
+
+
+
+
+
+
+
 ## 1.项目目录结构介绍、
 
 ```tree
