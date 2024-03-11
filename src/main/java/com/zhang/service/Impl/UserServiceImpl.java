@@ -64,6 +64,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper , User>
      */
     @Override
     public boolean register(String username,String password) {
+        //根据用户名查询用户信息
+        QueryWrapper<User> wrapper = new QueryWrapper<>();
+        wrapper.eq("username",username);
+        if (userMapper.selectOne(wrapper)!=null){
+            throw new userException("用户名已经存在！");
+        }
+
         //密码加密
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(4);
         User user = new User();

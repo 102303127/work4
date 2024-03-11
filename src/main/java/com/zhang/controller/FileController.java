@@ -1,11 +1,13 @@
 package com.zhang.controller;
 
 
+import com.zhang.advice.exception.userException;
 import com.zhang.pojo.User;
 import com.zhang.service.UserService;
 import com.zhang.utils.FileUtils;
 import com.zhang.vo.result;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -24,6 +26,7 @@ import java.util.Set;
  * &#064;Description  文件上传并校验Controller层
  */
 @RestController
+@Slf4j
 public class FileController {
 
     @Autowired
@@ -40,6 +43,11 @@ public class FileController {
      */
     @PutMapping("/avatar/uploads")
     public result update(@RequestBody MultipartFile file) throws IOException {
+
+        if (file.isEmpty()) {
+            log.error("用户未上传文件");
+            throw new userException("请选中文件");
+        }
         // 原始文件名称
         String fileName = file.getOriginalFilename();
 
@@ -47,12 +55,14 @@ public class FileController {
         int index = fileName.lastIndexOf(".");
         String suffix;
         if (index == -1 || (suffix = fileName.substring(index + 1)).isEmpty()) {
+            log.error("文件格式类型错误");
             String msg= "文件后缀不能为空";
             return new result(-1,msg);
         }
         // 允许上传的文件后缀列表
         Set<String> allowSuffix = new HashSet<>(Arrays.asList("jpg", "jpeg", "png", "gif"));
         if (!allowSuffix.contains(suffix.toLowerCase())) {
+            log.error("文件格式类型错误");
             String msg="非法的文件，不允许的文件类型：" + suffix;
             return new result(-1,msg);
         }
@@ -60,12 +70,13 @@ public class FileController {
         String url=fileUtils.uploads(file);
         boolean flag= url!=null;
         if(flag){
-            /*String token = request.getHeader("token");*/
             User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             user.setAvatarUrl(url);
             userService.update(user);
+            log.info("用户头像上传成功");
+            return result.OK(url);
         }
 
-        return new result(flag ? 10000:-1,flag?url:"上传头像失败");
+        return result.Fail("文件上传失败");
     }
 }

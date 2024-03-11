@@ -1,7 +1,7 @@
 #设置环境
 spring:
   profiles:
-    include: local
+    include: aliyun
 
 
   datasource:

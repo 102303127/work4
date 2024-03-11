@@ -1,10 +1,12 @@
 package com.zhang.controller;
 
 
+import com.zhang.advice.exception.userException;
 import com.zhang.pojo.User;
 import com.zhang.service.UserService;
 import com.zhang.vo.base;
 import com.zhang.vo.result;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,6 +20,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/user")
+@Slf4j
 public class UserController {
 
     @Autowired
@@ -41,9 +44,14 @@ public class UserController {
     @PostMapping("/register")
     public result register(@RequestParam("username") String username,
                            @RequestParam("password") String password){
+        if (username==null||password==null) throw new userException("请补全注册信息");
         boolean flag=userService.register(username,password);
-        if(flag) return result.OK();
-        else return result.Fail();
+        if(flag) {
+            log.info("用户注册成功");
+            return result.OK();
+        }
+        log.error("注册失败");
+        return result.Fail();
     }
 
     /**
@@ -56,6 +64,7 @@ public class UserController {
     @PostMapping("/login")
     public result login(@RequestParam("username") String username,
                         @RequestParam("password") String password){
+        if (username==null||password==null) throw new userException("请补全登录信息");
         //利用Map返回accessToken和refreshToken
         Map<String, String> map = userService.login(username, password);
         return result.OK(map);
@@ -70,6 +79,7 @@ public class UserController {
      */
     @GetMapping("/info")
     public result getUser(@RequestParam("userId") String userId){
+        if (userId==null)throw new userException("用户ID信息不可为空");
         User user = userService.getById(userId);
         boolean flag= user != null;
         return new result(new base(flag?10000:-1,flag ? "success":"用户查询失败，请重试"),user);

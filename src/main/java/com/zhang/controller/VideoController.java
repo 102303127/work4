@@ -8,6 +8,7 @@ import com.zhang.utils.DataUtils;
 import com.zhang.utils.FileUtils;
 import com.zhang.vo.result;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -25,11 +26,10 @@ import java.util.Objects;
  */
 @RestController
 @RequestMapping("/video")
+@Slf4j
 public class VideoController {
     @Autowired
     private VideoService videoService;
-    @Autowired
-    private UserService userService;
     @Autowired
     private FileUtils fileUtils;
     /**
@@ -42,8 +42,12 @@ public class VideoController {
     public result feed(@RequestParam(value = "latest_time",required = false)String timestamp){
         List<Video> video = videoService.feed(timestamp);
         boolean flag=video!=null;
-        if(flag) return result.OK(video);
-        else return result.Fail();
+        if(flag) {
+            log.info("拉取全部视频流");
+            return result.OK(video);
+        }
+        log.error("拉取视频流失败");
+        return result.Fail();
     }
     /**
      * 投稿
@@ -63,9 +67,11 @@ public class VideoController {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             User user = (User) authentication.getPrincipal();
             videoService.publish(user.getId(), url, title, description);
+            log.info("投稿成功");
             return result.OK(url);
         }
-        else return result.Fail();
+        log.error("投稿失败");
+        return result.Fail();
     }
     /**
      * 发布列表
@@ -82,8 +88,12 @@ public class VideoController {
         List<Video> list = videoService.list(Long.parseLong(userId), page_num, page_size);
         Long total = videoService.getTotal(Long.parseLong(userId));
         boolean flag=list!=null;
-        if(flag) return result.OK(list,total);
-        else return result.Fail();
+        if(flag) {
+            log.info("查询用户发布列表成功");
+            return result.OK(list,total);
+        }
+        log.info("查询用户发布列表失败");
+        return result.Fail();
     }
 
     /**
@@ -109,8 +119,12 @@ public class VideoController {
         List<Video> video = videoService.search(keywords, page_num, page_size,
                 fromDate,toDate, userName);
         boolean flag=video!=null;
-        if(flag) return result.OK(video, (long) video.size());
-        else return result.Fail();
+        if(flag) {
+            log.info("搜索视频成功");
+            return result.OK(video, (long) video.size());
+        }
+        log.error("搜索视频失败");
+        return result.Fail();
 
     }
 
@@ -125,7 +139,11 @@ public class VideoController {
                           @RequestParam("page_num") Integer page_num){
         List<Video> video = videoService.popular(page_size, page_num);
         boolean flag=video!=null;
-        if (flag) return result.OK(video);
+        if (flag) {
+            log.info("查询热门排行榜成功");
+            return result.OK(video);
+        }
+        log.error("查询热门排行榜失败");
         return result.Fail();
     }
 }

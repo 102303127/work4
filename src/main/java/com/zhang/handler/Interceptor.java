@@ -5,10 +5,8 @@ import com.zhang.service.VideoService;
 import com.zhang.utils.BeanUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.aspectj.lang.annotation.Before;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
+
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -16,6 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Component
 @EnableAspectJAutoProxy
+@Slf4j
 public class Interceptor implements HandlerInterceptor {
 
     @Override
@@ -31,6 +30,7 @@ public class Interceptor implements HandlerInterceptor {
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
         //注入失败用了BeanUtils
+        log.info("用户访问了视频资源");
         VideoService videoService = BeanUtils.getBean(VideoService.class);
         String pathInfo = request.getServletPath();
         String videoUrl= "http://localhost:8080" + pathInfo ;
